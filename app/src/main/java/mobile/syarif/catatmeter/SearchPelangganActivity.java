@@ -9,7 +9,7 @@ import android.os.Bundle;
 import java.util.LinkedList;
 
 import mobile.syarif.catatmeter.adapter.PelangganAdapter;
-import mobile.syarif.catatmeter.model.Pelanggan;
+import mobile.syarif.catatmeter.model.PelangganModel;
 
 public class SearchPelangganActivity extends AppCompatActivity {
     @Override
@@ -21,17 +21,17 @@ public class SearchPelangganActivity extends AppCompatActivity {
         }
         catch (NullPointerException e){}
         setContentView(R.layout.activity_search_pelanggan);
-        LinkedList<Pelanggan> pelanggan = this.getDataPelanggan();
+        LinkedList<PelangganModel> pelanggan = this.getDataPelanggan();
         RecyclerView recyclerViewPelanggan = findViewById(R.id.recyclerViewPelanggan);
         PelangganAdapter pelangganAdapter = new PelangganAdapter(this, pelanggan);
         recyclerViewPelanggan.setAdapter(pelangganAdapter);
         recyclerViewPelanggan.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    public LinkedList<Pelanggan> getDataPelanggan(){
-        LinkedList<Pelanggan> pelanggan = new LinkedList<>();
-        pelanggan.add(new Pelanggan(1201200016, "syarif baru", "alamat baru"));
-        pelanggan.add(new Pelanggan(1201200017, "syarif baru 2", "alamat baru 2"));
+    public LinkedList<PelangganModel> getDataPelanggan(){
+        LinkedList<PelangganModel> pelanggan = new LinkedList<>();
+        pelanggan.add(new PelangganModel(1201200016, "syarif baru", "alamat baru"));
+        pelanggan.add(new PelangganModel(1201200017, "syarif baru 2", "alamat baru 2"));
         return pelanggan;
     }
 }

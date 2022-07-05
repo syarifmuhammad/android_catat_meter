@@ -13,14 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.LinkedList;
 
 import mobile.syarif.catatmeter.R;
-import mobile.syarif.catatmeter.model.Pelanggan;
+import mobile.syarif.catatmeter.model.PelangganModel;
 
 public class PelangganAdapter extends RecyclerView.Adapter<PelangganAdapter.PelangganViewHolder>{
     private LayoutInflater mInflater;
-    private final LinkedList<Pelanggan> pelanggan;
+    private final LinkedList<PelangganModel> pelanggan;
 
     public PelangganAdapter(Context context,
-                            LinkedList<Pelanggan> pelanggan) {
+                            LinkedList<PelangganModel> pelanggan) {
         this.mInflater = LayoutInflater.from(context);
         this.pelanggan = pelanggan;
     }
@@ -51,7 +51,7 @@ public class PelangganAdapter extends RecyclerView.Adapter<PelangganAdapter.Pela
 
     @Override
     public void onBindViewHolder(PelangganViewHolder holder, int position) {
-        Pelanggan pelanggan = this.pelanggan.get(position);
+        PelangganModel pelanggan = this.pelanggan.get(position);
         Integer id_pelanggan = pelanggan.getId_pelanggan();
         String nama = pelanggan.getNama();
         String alamat = pelanggan.getAlamat();
