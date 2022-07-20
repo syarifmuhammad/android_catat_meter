@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">Catat Meter</string>
+    <string name="HEAD_DATA_PELANGGAN">DATA PELANGGAN</string>
+    <string name="UBAH_DATA_PELANGGAN">Ubah Data Pelanggan</string>
+    <string name="button">button</string>
+    <string name="icon">icon</string>
+    <string name="input_angka_meter">INPUT ANGKA METER</string>
+    <string name="cari_pelanggan">CARI PELANGGAN</string>
+    <string name="bulan_lalu">Bulan Lalu</string>
+    <string name="sekarang">Sekarang</string>
+    <string name="catat_meter">CATAT METER</string>
+    <string name="_0">0</string>
+    <string name="cth_0">cth : 0</string>
+    <string name="id_nama_pelanggan">ID / Nama Pelanggan</string>
+    <string name="tambah_data_pelanggan">Tambah Data Pelanggan</string>
+    <string name="rumus">Rumus : Angka meter sekarang - Angka meter bulan lalu</string>
+    <string name="tagihan">TAGIHAN</string>
+    <string name="ubah">Ubah</string>
+    <string name="belum_lunas">Belum Lunas</string>
+    <string name="konfirmasi_lunas">KONFIRMASI LUNAS</string>
 </resources>

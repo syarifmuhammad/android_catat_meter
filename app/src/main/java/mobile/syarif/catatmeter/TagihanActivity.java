@@ -1,5 +1,6 @@
 package mobile.syarif.catatmeter;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,8 +12,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import mobile.syarif.catatmeter.database.PelangganQueryImplementation;
 import mobile.syarif.catatmeter.database.PencatatanQueryImplementation;
@@ -21,8 +24,9 @@ import mobile.syarif.catatmeter.database.QueryResponse;
 import mobile.syarif.catatmeter.model.PelangganModel;
 import mobile.syarif.catatmeter.model.PencatatanModel;
 
-public class DetailPelanggan extends AppCompatActivity {
+public class TagihanActivity extends AppCompatActivity {
     private int id;
+    private PencatatanModel pencatatan;
     private QueryContract.PencatatanQuery query;
     private QueryContract.PelangganQuery queryPelanggan;
     private TextView tv_id_pelanggan;
@@ -31,9 +35,14 @@ public class DetailPelanggan extends AppCompatActivity {
     private TextView tv_alamat;
     private Integer tarif;
     private TextView tv_periode;
+    private TextView tv_calculate;
+    private TextView tv_payments;
+    private TextView tv_note;
+    private TextView tv_status;
     EditText et_meter_bulan_lalu;
     EditText et_meter_sekarang;
-    LinearLayout buttonCatatanMeter;
+    LinearLayout buttonConfirmation;
+    private TextView tv_buttonConfirmation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,19 +51,24 @@ public class DetailPelanggan extends AppCompatActivity {
             this.getSupportActionBar().hide();
         }
         catch (NullPointerException e){}
-        setContentView(R.layout.activity_detail_pelanggan);
+        setContentView(R.layout.activity_tagihan);
         tv_id_pelanggan = findViewById(R.id.tv_id_pelanggan);
         tv_nama = findViewById(R.id.tv_nama);
         tv_no_telepon = findViewById(R.id.tv_no_telepon);
         tv_alamat = findViewById(R.id.tv_alamat);
+        tv_calculate = findViewById(R.id.tv_calculate);
+        tv_payments = findViewById(R.id.tv_payments);
+        tv_note = findViewById(R.id.tv_note);
+        tv_status = findViewById(R.id.tv_status);
         tv_periode = findViewById(R.id.tv_periode);
         tv_periode.setText(getPeriode());
-        buttonCatatanMeter = findViewById(R.id.buttonConfirmation);
+        buttonConfirmation = findViewById(R.id.buttonConfirmation);
+        tv_buttonConfirmation = findViewById(R.id.tv_buttonConfirmation);
         ImageView btn_back = findViewById(R.id.btn_back);
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DetailPelanggan.super.onBackPressed();
+                TagihanActivity.super.onBackPressed();
             }
         });
     }
@@ -69,29 +83,43 @@ public class DetailPelanggan extends AppCompatActivity {
         setDataPelangganView(intent);
         query = new PencatatanQueryImplementation();
         query.getCurrentPeriodeWhereIdPelanggan(id, new QueryResponse<PencatatanModel>() {
+            @SuppressLint("ResourceAsColor")
             @Override
             public void onSuccess(PencatatanModel data) {
-                et_meter_bulan_lalu = findViewById(R.id.et_meter_bulan_lalu);
-                et_meter_sekarang = findViewById(R.id.et_meter_sekarang);
-                et_meter_bulan_lalu.setInputType(0);
-                getLastPencatatan(id);
                 if(data != null){
-                    et_meter_sekarang.setText(String.valueOf(data.getPemakaian_bulan_ini()));
-                    buttonCatatanMeter.setOnClickListener(new View.OnClickListener() {
+                    pencatatan = data;
+                    int sisa = data.getPemakaian_bulan_ini() - data.getPemakaian_terakhir();
+                    String calculate = data.getPemakaian_bulan_ini() + " - " + data.getPemakaian_terakhir() + " = " + sisa + " m3";
+                    tv_calculate.setText(calculate);
+                    String total = formatRupiah(Double.valueOf(sisa * tarif));
+                    tv_payments.setText(total);
+                    String note = "Note : Tarif (" + formatRupiah(Double.valueOf(tarif)) + " / m3)";
+                    tv_note.setText(note);
+                    int setStatus = 0;
+                    if(data.getStatus() == 0){
+                        tv_status.setText("Belum Lunas");
+                        setStatus = 1;
+                    }else{
+                        tv_status.setText("Lunas");
+                        tv_status.setTextColor(getResources().getColor(R.color.text_success));
+                        buttonConfirmation.setBackgroundResource(R.drawable.bg_danger_rounded_30);
+                        tv_buttonConfirmation.setText("BATALKAN STATUS LUNAS");
+                    }
+                    int finalSetStatus = setStatus;
+                    buttonConfirmation.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(View view) {
-                            PencatatanModel pencatatan = data;
-                            data.setPemakaian_bulan_ini(Integer.parseInt(et_meter_sekarang.getText().toString()));
-                            update(pencatatan);
-                        }
-                    });
-                }else{
-                    et_meter_sekarang.setText(et_meter_bulan_lalu.getText().toString());
-                    buttonCatatanMeter.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            PencatatanModel pencatatan = prepareInsert(id);
-                            insert(pencatatan);
+                        public void onClick(View view){
+                            data.setStatus(finalSetStatus);
+                            query.update(data, new QueryResponse<Boolean>() {
+                                @Override
+                                public void onSuccess(Boolean data) {
+                                    recreate();
+                                }
+
+                                @Override
+                                public void onFailure(String message) {
+                                }
+                            });
                         }
                     });
                 }
@@ -103,6 +131,7 @@ public class DetailPelanggan extends AppCompatActivity {
             }
         });
     }
+
     private void setDataPelangganView(Intent intent){
         int id = intent.getIntExtra("id_pelanggan", -1);
         queryPelanggan.get(id, new QueryResponse<PelangganModel>() {
@@ -130,6 +159,7 @@ public class DetailPelanggan extends AppCompatActivity {
                 if(data != null){
                     meter_bulan_lalu = data.getPemakaian_bulan_ini();
                 }
+                Log.d("meter_bulan_lalu", String.valueOf(meter_bulan_lalu));
                 et_meter_bulan_lalu.setText(String.valueOf(meter_bulan_lalu));
             }
 
@@ -141,57 +171,15 @@ public class DetailPelanggan extends AppCompatActivity {
         });
     }
 
-    public PencatatanModel prepareInsert(int pelanggan_id){
-        int bulan_lalu = Integer.parseInt(et_meter_bulan_lalu.getText().toString());
-        int bulan_sekarang = Integer.parseInt(et_meter_sekarang.getText().toString());
-        String periode = getPeriode();
-        Date tanggal = new Date();
-        return new PencatatanModel(-1, bulan_lalu, bulan_sekarang, tarif, periode, tanggal, pelanggan_id);
-    }
-
-    public void insert(PencatatanModel pencatatan){
-        query.create(pencatatan, new QueryResponse<Boolean>() {
-            @Override
-            public void onSuccess(Boolean data) {
-                Intent intent = new Intent(DetailPelanggan.this, TagihanActivity.class);
-                intent.putExtra("id_pelanggan", id);
-                intent.putExtra("nama", tv_nama.getText());
-                intent.putExtra("no_telepon", tv_no_telepon.getText());
-                intent.putExtra("alamat", tv_alamat.getText());
-                intent.putExtra("tarif", tarif);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                DetailPelanggan.this.startActivity(intent);
-            }
-
-            @Override
-            public void onFailure(String message) {
-//                recyclerView.setVisibility(View.GONE);
-//                noDataFoundTextView.setVisibility(View.VISIBLE);
-            }
-        });
-
-    }
-    public void update(PencatatanModel pencatatan){
-        query.update(pencatatan, new QueryResponse<Boolean>() {
-            @Override
-            public void onSuccess(Boolean data) {
-                Intent intent = new Intent(DetailPelanggan.this, TagihanActivity.class);
-                intent.putExtra("id_pelanggan", id);
-                intent.putExtra("nama", tv_nama.getText());
-                intent.putExtra("no_telepon", tv_no_telepon.getText());
-                intent.putExtra("alamat", tv_alamat.getText());
-                intent.putExtra("tarif", tarif);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                DetailPelanggan.this.startActivity(intent);
-            }
-
-            @Override
-            public void onFailure(String message) {
-//                recyclerView.setVisibility(View.GONE);
-//                noDataFoundTextView.setVisibility(View.VISIBLE);
-            }
-        });
-
+    public void ubahPencatatan(View view){
+        Intent intent;
+        intent = new Intent(TagihanActivity.this, DetailPelanggan.class);
+        intent.putExtra("id_pelanggan", Integer.valueOf(tv_id_pelanggan.getText().toString()));
+        intent.putExtra("nama", tv_nama.getText().toString());
+        intent.putExtra("no_telepon", tv_no_telepon.getText().toString());
+        intent.putExtra("alamat", tv_alamat.getText().toString());
+        intent.putExtra("tarif", tarif);
+        TagihanActivity.this.startActivity(intent);
     }
 
     public void updatePelangganActivity(View view){
@@ -215,6 +203,12 @@ public class DetailPelanggan extends AppCompatActivity {
     private String getMonth(int monthValue){
         String[] month = {"JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER"};
         return month[monthValue];
+    }
+
+    private String formatRupiah(Double number){
+        Locale localeID = new Locale("in", "ID");
+        NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
+        return formatRupiah.format(number);
     }
 
 

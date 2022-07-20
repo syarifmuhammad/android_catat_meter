@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_primary_color"
-    tools:context=".DetailPelanggan">
+    tools:context=".TagihanActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ll_header"
@@ -34,7 +34,6 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:clickable="true"
             android:fontFamily="@font/roboto"
             android:gravity="center_vertical"
             android:onClick="updatePelangganActivity"
@@ -125,8 +124,10 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
+                    android:id="@+id/view2"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_weight="1"
                     android:background="@color/bg_primary_color" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -162,8 +163,10 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
+                    android:id="@+id/view3"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_weight="1"
                     android:background="@color/bg_primary_color" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -199,8 +202,10 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
+                    android:id="@+id/view4"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_weight="1"
                     android:background="@color/bg_primary_color" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -235,6 +240,13 @@
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <View
+                    android:id="@+id/view5"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/bg_primary_color" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -263,7 +275,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/roboto_medium"
                     android:gravity="center_horizontal"
-                    android:text="@string/input_angka_meter"
+                    android:text="@string/tagihan"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="20sp" />
@@ -271,7 +283,6 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="14dp"
                     android:layout_weight="1">
 
                     <ImageView
@@ -299,70 +310,142 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/iv_calendar"
                         app:layout_constraintTop_toTopOf="parent" />
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <View
+                    android:id="@+id/view6"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/bg_primary_color" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_rumus"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/roboto"
+                        android:text="@string/rumus"
+                        android:textColor="#A4A6AA"
+                        android:textSize="11sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="TextContrastCheck" />
+
+                    <ImageView
+                        android:id="@+id/iv_calculate"
+                        android:layout_width="34dp"
+                        android:layout_height="24dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:contentDescription="@string/icon"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_rumus"
+                        app:srcCompat="@drawable/ic_baseline_calculate_24" />
+
+                    <TextView
+                        android:id="@+id/tv_calculate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="11dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="@font/roboto"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/iv_calculate"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_rumus" />
+
+                    <TextView
+                        android:id="@+id/textView13"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:fontFamily="@font/roboto"
+                        android:onClick="ubahPencatatan"
+                        android:text="@string/ubah"
+                        android:textColor="#76C6E7"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_rumus" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:id="@+id/view7"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/bg_primary_color" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/iv_payments"
+                        android:layout_width="34dp"
+                        android:layout_height="24dp"
+                        android:layout_marginTop="8dp"
+                        android:contentDescription="@string/icon"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_baseline_payments_24" />
+
+                    <TextView
+                        android:id="@+id/tv_payments"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="11dp"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/roboto"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toEndOf="@+id/iv_payments"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_note"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:fontFamily="@font/roboto"
+                        android:textColor="#8AFFFFFF"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/iv_payments" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:id="@+id/view8"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/bg_primary_color" />
+
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/tv_status"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="11dp"
                     android:layout_weight="1"
-                    android:fontFamily="@font/roboto_medium"
-                    android:text="@string/bulan_lalu"
-                    android:textColor="@color/white"
+                    android:fontFamily="@font/roboto"
+                    android:gravity="center"
+                    android:text="@string/belum_lunas"
+                    android:textColor="@color/text_danger"
                     android:textSize="20sp" />
-
-                <EditText
-                    android:id="@+id/et_meter_bulan_lalu"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="14dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_auro_metal_saurus_rounded"
-                    android:ems="10"
-                    android:fontFamily="@font/roboto_medium"
-                    android:importantForAutofill="no"
-                    android:inputType="none"
-                    android:paddingStart="21dp"
-                    android:paddingTop="16dp"
-                    android:paddingEnd="21dp"
-                    android:paddingBottom="16dp"
-                    android:textColor="#47FFFFFF"
-                    android:textColorHint="#DDD7D7"
-                    android:textSize="20sp"
-                    tools:ignore="SpeakableTextPresentCheck" />
-
-                <TextView
-                    android:id="@+id/textView10"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/roboto_medium"
-                    android:text="@string/sekarang"
-                    android:textColor="@color/white"
-                    android:textSize="20sp" />
-
-                <EditText
-                    android:id="@+id/et_meter_sekarang"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_primary_rounded"
-                    android:ems="10"
-                    android:focusable="true"
-                    android:fontFamily="@font/roboto_medium"
-                    android:hint="@string/_0"
-                    android:importantForAutofill="no"
-                    android:inputType="number"
-                    android:paddingStart="21dp"
-                    android:paddingTop="16dp"
-                    android:paddingEnd="21dp"
-                    android:paddingBottom="16dp"
-                    android:text="@string/_0"
-                    android:textColor="@color/white"
-                    android:textColorHint="#47FFFFFF"
-                    android:textSize="20sp" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -370,7 +453,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
-                android:background="@drawable/bg_info_rounded_30"
+                android:background="@drawable/bg_success_rounded_30"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center_horizontal|center_vertical"
@@ -387,7 +470,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="9dp"
                     android:fontFamily="@font/roboto"
-                    android:text="@string/catat_meter"
+                    android:text="@string/konfirmasi_lunas"
                     android:textAlignment="textStart"
                     android:textColor="@color/white"
                     android:textSize="20sp"

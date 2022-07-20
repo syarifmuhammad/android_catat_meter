@@ -10,8 +10,13 @@
 
     <color name="text_primary">#76C6E7</color>
     <color name="text_secondary">#393E46</color>
+    <color name="text_danger">#F65757</color>
+    <color name="text_success">#19C889</color>
 
     <color name="bg_primary_color">#222831</color>
     <color name="bg_secondary_color">#393E46</color>
+    <color name="bg_success_color">#19C889</color>
+    <color name="bg_danger_color">#F65757</color>
     <color name="bg_info_color">#197DC8</color>
+    <color name="bg_auro_metal_saurus_color">#747B87</color>
 </resources>
